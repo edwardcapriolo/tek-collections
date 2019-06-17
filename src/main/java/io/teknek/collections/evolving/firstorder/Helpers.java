@@ -1,14 +1,9 @@
 package io.teknek.collections.evolving.firstorder;
 
-
-
 import io.teknek.collections.Set;
 import io.teknek.collections.set.TreeSet;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;

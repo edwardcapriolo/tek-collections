@@ -63,6 +63,14 @@ public class TreeSetTest {
     }
 
     @Test
+    void lowest(){
+        TreeSet<String> t = new TreeSet<>(String::compareTo, null, "hi");
+        assertEquals(null, t.first());
+        assertEquals("hi", t.last());
+    }
+
+
+    @Test
     void inOrderTraversal(){
         TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5);
         MutableArrayList<Integer> assertList = new MutableArrayList<>();
@@ -77,6 +85,7 @@ public class TreeSetTest {
         t.inOrderVisitor(assertList::add);
         Sequence.equals(assertList.iterator(), new ImmutableArrayList<>(2, 4, 5, 6).iterator());
     }
+
 
     public static void main(String [] args) throws InterruptedException {
         /*

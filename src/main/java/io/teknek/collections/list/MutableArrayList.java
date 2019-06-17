@@ -28,7 +28,6 @@ public class MutableArrayList<T> extends BaseArrayList<T> implements ElementBase
 
             @Override
             public T next() {
-
                 if (data.length == 0) {
                     throw new NoSuchElementException();
                 }

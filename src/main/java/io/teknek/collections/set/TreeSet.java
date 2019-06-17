@@ -9,20 +9,21 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
 import io.teknek.collections.evolving.Maybe;
+import io.teknek.collections.evolving.Something;
 
 public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTraversable<T> {
 
-    protected TreeNode root;
+    protected TreeNode<T> root;
     protected Comparator comparator;
 
     public TreeSet(Comparator<T> comparator, T ... elements) {
         this.comparator = MaybeComparator.of(comparator);
         for (T t : elements) {
             if (root == null) {
-                root = new TreeNode<>(nullToNothing(t), null, null);
+                root = new TreeNode<>(t, null, null);
                 continue;
             }
-            addElement(root, (T) nullToNothing(t));
+            addElement(root, t);
         }
     }
 
@@ -30,16 +31,17 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         this.comparator = comparator;
         for (T t : input) {
             if (root == null) {
-                root = new TreeNode<>(nullToNothing(t), null, null);
+                root = new TreeNode<>(t, null, null);
                 continue;
             }
-            addElement(root, (T) nullToNothing(t));
+            addElement(root, t);
         }
     }
 
 
     private void addElement(TreeNode<T> root, T t) {
-        int result = comparator.compare(root.datum, t);
+        //note we do the conversionin treenode ctor but maybe it shouldbe donehere
+        int result = t == null? -1 : comparator.compare(root.datum, t);
 
         if (result == 0) {
             //consider if this method should return boolean
@@ -92,10 +94,9 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         return null;
     }
 
-
     private T lowest(TreeNode<T> node){
         if (node.left == null){
-            return node.datum;
+            return objectToCouldBeT(node.datum);
         } else {
             return lowest(node.left);
         }
@@ -122,7 +123,7 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
 
     private T highest(TreeNode<T> node){
         if (node.right == null){
-            return node.datum;
+            return objectToCouldBeT(node.datum);
         } else {
             return highest(node.right);
         }
@@ -141,9 +142,10 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         if(node == null){
             return Maybe.nothing();
         }
+        @SuppressWarnings("unchecked")
         int split = comparator.compare(node.datum, searchFor);
         if (split == 0){
-            return node.right == null ? Maybe.nothing() : Maybe.definitely(node.right.datum);
+            return node.right == null ? Maybe.nothing() : Maybe.definitely(node.right.asT());
         } else if(split > 0){
             return after(searchFor, node.left);
         } else {
@@ -187,9 +189,11 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
             public T next() {
                 if (first) {
                     Object toReturn = root.datum;
-                    current = root.datum;
+                    T converted = objectToCouldBeT(toReturn);
+                    Maybe<T> next = after(converted);
                     first = false;
-                    return toReturn == Maybe.nothing() ? null : (T) current;
+                    current = ((Something<T>) next).get();
+                    return converted;
                 } else {
                     Object toReturn = current;
                     T converted = objectToCouldBeT(toReturn);
@@ -197,7 +201,7 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
                     if (next == Maybe.nothing()){
                         throw new IllegalArgumentException("Next passed end");
                     }
-                    current = converted;
+                    current = ((Something<T>) next).get();
                     return converted;
                 }
             }
@@ -214,7 +218,7 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         if (node == null){
             return;
         }
-        consumer.accept(node.datum);
+        consumer.accept(node.datum == Maybe.nothing() ? null: node.asT());
         preOrderConsumer(consumer, node.left);
         preOrderConsumer(consumer, node.right);
     }
@@ -224,26 +228,21 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
             return;
         }
         inOrderConsumer(consumer, node.left);
-        consumer.accept( node.datum == Maybe.nothing() ? null: node.datum);
+        consumer.accept( node.datum == Maybe.nothing() ? null: node.asT());
         inOrderConsumer(consumer, node.right);
     }
 
-    private static <X> Object nullToNothing(X t){
+    static <X> Object nullToNothing(X t){
         return t == null? Maybe.nothing() : t;
     }
     private static <X> X objectToCouldBeT(Object o){
         return o == Maybe.nothing() ? null : (X) o;
     }
-}
-
-class TreeNode<T> {
-    T datum;
-    TreeNode<T> left;
-    TreeNode<T> right;
-    public TreeNode(T datum, TreeNode<T> left, TreeNode<T> right){
-        this.datum = datum;
-        this.left = left;
-        this.right = right;
+    public String toString(){
+        StringBuffer s = new StringBuffer();
+        //TODO this puts , after last which is misleading
+        this.inOrderVisitor(x -> { s.append(x); s.append(", ");}  );
+        return s.toString();
     }
 }
 
