@@ -1,8 +1,8 @@
 package io.teknek.collections;
 
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 interface IntIterator {
     int next();
@@ -12,6 +12,12 @@ interface IntIterator {
 interface IntIterable {
     IntIterator intIterator();
 }
+
+interface RandomReadAccess<T> {
+    public T elementAt(int index);
+    public Optional<T> safeElementAt(int index);
+}
+
 
 public class IntSequence implements Iterable<Integer>, IntIterable, Sequence<Integer> {
 
@@ -25,6 +31,7 @@ public class IntSequence implements Iterable<Integer>, IntIterable, Sequence<Int
         data = new int[x.length];
         System.arraycopy(x, 0, data, 0, x.length);
     }
+
     @Override
     public Iterator<Integer> iterator() {
         return new Iterator<Integer>() {
