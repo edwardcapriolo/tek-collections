@@ -9,5 +9,10 @@ public class MutableArrayListTest {
         MutableArrayList<Integer> a = new MutableArrayList<>();
         a.insert(5);
         Assertions.assertEquals(5, a.elementAt(0));
+
+        a.add(2, 4);
+        System.out.println(a);
+        a.add(0,9);
+        System.out.println(a);
     }
 }
