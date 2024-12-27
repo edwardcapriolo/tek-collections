@@ -1,15 +1,20 @@
 package io.teknek.collections;
 
+import java.util.Collection;
+
 public class Sequences {
 
-	public static Sequence of(Object o) {
+	public static ImmutableSequence of(Object o) {
 		return new ObjectSequence(o);
 	}
-	public static <T> Sequence<T> ofTyped(T t) {
+	public static <T> ImmutableSequence<T> ofTyped(T t) {
 		return new ObjectSequence<T>(t);
 	}
-	public static Sequence<Integer> of(int [] x){
+	public static ImmutableSequence<Integer> of(int [] x){
 		return new IntSequence(x);
 	}
 
+	public static <T> Sequence<T> of(Collection<T> t){
+		return null;
+	}
 }

@@ -1,8 +1,6 @@
 package io.teknek.collections;
 
-import java.util.Iterator;
-
-public class ObjectSequence<T> implements Iterable<T>, Sequence<T> {
+public class ObjectSequence<T> implements ImmutableSequence<T> {
 
 	private Object[] t;
 
@@ -11,7 +9,7 @@ public class ObjectSequence<T> implements Iterable<T>, Sequence<T> {
 	}
 
 	@Override
-	public Iterator<T> iterator() {
+	public ImmutableIterator<T> iterator() {
 		// TODO Auto-generated method stub
 		return null;
 	}

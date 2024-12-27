@@ -1,9 +1,42 @@
 package io.teknek.collections;
 
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 
-public class MutableArrayList<T> extends ArrayList<T> implements RandomWriteAccess<T>{
+public class MutableArrayList<T> extends BaseArrayList<T> implements RandomWriteAccess<T>, MutableSequence<T> {
+
+    @Override
+    public MutableIterator<T> iterator() {
+        return new MutableIterator<T>() {
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("do this");
+            }
+
+            int i;
+            @Override
+            public boolean hasNext() {
+                if (data.length == 0) {
+                    return false;
+                }
+                return i < data.length;
+            }
+
+            @Override
+            public T next() {
+
+                if (data.length == 0) {
+                    throw new NoSuchElementException();
+                }
+                if (i < data.length) {
+                    return (T) data[i++];
+                }
+                throw new NoSuchElementException();
+            }
+        };
+    }
 
     @Override
     public void insert(T t) {

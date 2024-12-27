@@ -1,6 +1,5 @@
 package io.teknek.collections;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -25,7 +24,7 @@ interface RandomReadAccess<T> {
 }
 
 
-public class IntSequence implements Iterable<Integer>, IntIterable, Sequence<Integer> {
+public class IntSequence implements ImmutableIterable<Integer>, IntIterable, ImmutableSequence<Integer> {
 
     private final int [] data;
 
@@ -39,8 +38,8 @@ public class IntSequence implements Iterable<Integer>, IntIterable, Sequence<Int
     }
 
     @Override
-    public Iterator<Integer> iterator() {
-        return new Iterator<Integer>() {
+    public ImmutableIterator<Integer> iterator() {
+        return new ImmutableIterator<Integer>() {
 
             int i;
             @Override
@@ -62,12 +61,6 @@ public class IntSequence implements Iterable<Integer>, IntIterable, Sequence<Int
                 }
                 throw new NoSuchElementException();
             }
-
-            @Override
-            public void remove() {
-
-            }
-
         };
     }
     @Override
@@ -95,6 +88,5 @@ public class IntSequence implements Iterable<Integer>, IntIterable, Sequence<Int
         };
     }
 
-
-
 }
+

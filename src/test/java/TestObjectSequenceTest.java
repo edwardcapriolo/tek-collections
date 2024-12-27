@@ -9,7 +9,7 @@ public class TestObjectSequenceTest {
 
 	@Test
 	void primitiveIteratorTest(){
-		Sequence<Integer> k = Sequences.of( new int[] { 1,2,3});
+		Sequence<Integer> k = Sequences.of( new int[] { 1, 2, 3 } );
 		assertEquals(1, k.iterator().next());
 	}
 }
