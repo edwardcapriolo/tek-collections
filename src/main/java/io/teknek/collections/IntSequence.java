@@ -12,7 +12,7 @@ interface IntIterable {
     IntIterator intIterator();
 }
 
-interface RandomReadAccess<T> {
+interface ElementBasedReadAccess<T> {
     public T elementAt(int index);
 
     /**

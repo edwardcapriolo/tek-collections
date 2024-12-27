@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-abstract class BaseArrayList<T> implements RandomReadAccess<T> {
+abstract class BaseArrayList<T> implements ElementBasedReadAccess<T> {
     protected Object[] data;
 
     public BaseArrayList(T ... t){
