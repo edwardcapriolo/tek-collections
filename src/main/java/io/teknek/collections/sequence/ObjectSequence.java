@@ -1,4 +1,7 @@
-package io.teknek.collections;
+package io.teknek.collections.sequence;
+
+import io.teknek.collections.ImmutableIterator;
+import io.teknek.collections.ImmutableSequence;
 
 public class ObjectSequence<T> implements ImmutableSequence<T> {
 

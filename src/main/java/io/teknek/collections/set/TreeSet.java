@@ -1,4 +1,6 @@
-package io.teknek.collections;
+package io.teknek.collections.set;
+
+import io.teknek.collections.Set;
 
 import java.util.Comparator;
 

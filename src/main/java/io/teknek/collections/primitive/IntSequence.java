@@ -1,7 +1,10 @@
-package io.teknek.collections;
+package io.teknek.collections.primitive;
+
+import io.teknek.collections.ImmutableIterable;
+import io.teknek.collections.ImmutableIterator;
+import io.teknek.collections.ImmutableSequence;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 interface IntIterator {
     int next();
@@ -10,17 +13,6 @@ interface IntIterator {
 
 interface IntIterable {
     IntIterator intIterator();
-}
-
-interface ElementBasedReadAccess<T> {
-    public T elementAt(int index);
-
-    /**
-     *
-     * @param index element in a singular dimension index to look up
-     * @return an optional Some(index) if found else None
-     */
-    public Optional<T> safeElementAt(int index);
 }
 
 

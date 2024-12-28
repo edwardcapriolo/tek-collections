@@ -1,4 +1,4 @@
-import io.teknek.collections.ImmutableArrayList;
+import io.teknek.collections.list.ImmutableArrayList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;

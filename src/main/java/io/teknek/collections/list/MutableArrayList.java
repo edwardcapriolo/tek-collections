@@ -1,4 +1,8 @@
-package io.teknek.collections;
+package io.teknek.collections.list;
+
+import io.teknek.collections.MutableIterator;
+import io.teknek.collections.MutableSequence;
+import io.teknek.collections.RandomWriteAccess;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;

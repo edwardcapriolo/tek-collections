@@ -1,10 +1,15 @@
-package io.teknek.collections;
+package io.teknek.collections.list;
+
+import io.teknek.collections.DefinitiveSize;
+import io.teknek.collections.ElementBasedReadAccess;
+import io.teknek.collections.ImmutableIterator;
+import io.teknek.collections.ImmutableSequence;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-abstract class BaseArrayList<T> implements ElementBasedReadAccess<T> {
+abstract class BaseArrayList<T> implements ElementBasedReadAccess<T>, DefinitiveSize {
     protected Object[] data;
 
     public BaseArrayList(T ... t){
@@ -25,6 +30,11 @@ abstract class BaseArrayList<T> implements ElementBasedReadAccess<T> {
             return Optional.empty();
         }
         return (Optional<T>) Optional.of(data[index]);
+    }
+
+    @Override
+    public int size(){
+        return data.length;
     }
 }
 

@@ -1,4 +1,4 @@
-package io.teknek.collections;
+package io.teknek.collections.evolving;
 
 import java.util.Objects;
 

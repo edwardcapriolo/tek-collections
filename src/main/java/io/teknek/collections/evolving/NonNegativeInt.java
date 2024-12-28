@@ -1,4 +1,4 @@
-package io.teknek.collections;
+package io.teknek.collections.evolving;
 
 public class NonNegativeInt {
     final int underlying;

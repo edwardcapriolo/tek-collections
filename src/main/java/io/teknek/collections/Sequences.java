@@ -1,5 +1,8 @@
 package io.teknek.collections;
 
+import io.teknek.collections.primitive.IntSequence;
+import io.teknek.collections.sequence.ObjectSequence;
+
 import java.util.Collection;
 
 public class Sequences {

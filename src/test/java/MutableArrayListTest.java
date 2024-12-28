@@ -1,4 +1,4 @@
-import io.teknek.collections.MutableArrayList;
+import io.teknek.collections.list.MutableArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

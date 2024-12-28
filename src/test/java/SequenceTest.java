@@ -1,5 +1,5 @@
-import io.teknek.collections.ImmutableArrayList;
-import io.teknek.collections.MutableArrayList;
+import io.teknek.collections.list.ImmutableArrayList;
+import io.teknek.collections.list.MutableArrayList;
 import io.teknek.collections.Sequence;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

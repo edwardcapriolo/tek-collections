@@ -1,6 +1,6 @@
 package io.teknek.collections;
 
-interface Set<T> {
+public interface Set<T> {
     /**
      *
      * @param t

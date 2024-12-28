@@ -23,10 +23,3 @@ public interface Sequence<T> extends BaseIterable<T> {
    }
 }
 
-interface ImmutableSequence<T> extends Sequence<T> {
-
-}
-
-interface MutableSequence<T> extends Sequence<T> {
-
-}
