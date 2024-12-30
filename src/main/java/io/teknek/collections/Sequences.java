@@ -17,6 +17,7 @@ public class Sequences {
 		return new IntSequence(x);
 	}
 
+
 	public static <T> Sequence<T> of(Collection<T> t){
 		return null;
 	}
