@@ -56,6 +56,7 @@ class Node extends INode {
                 '}';
     }
 }
+
 class Branch extends INode {
     Collection x;
     public Branch(Collection x, INode parent){
