@@ -3,6 +3,7 @@ package io.teknek.collections.set;
 import io.teknek.collections.Set;
 
 import java.util.Comparator;
+import java.util.SortedSet;
 
 public class TreeSet<T> implements Set<T> {
 
@@ -11,6 +12,8 @@ public class TreeSet<T> implements Set<T> {
 
     public TreeSet(Comparator<T> comparator, T... elements) {
         this.comparator = comparator;
+        SortedSet s;
+
         for (T t : elements) {
             if (root == null) {
                 root = new TreeNode<>(t, null, null);

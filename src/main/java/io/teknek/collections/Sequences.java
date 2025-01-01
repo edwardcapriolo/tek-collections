@@ -3,6 +3,7 @@ package io.teknek.collections;
 import io.teknek.collections.primitive.IntSequence;
 import io.teknek.collections.sequence.ObjectSequence;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class Sequences {
@@ -17,8 +18,4 @@ public class Sequences {
 		return new IntSequence(x);
 	}
 
-
-	public static <T> Sequence<T> of(Collection<T> t){
-		return null;
-	}
 }
