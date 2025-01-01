@@ -2,13 +2,13 @@ package io.teknek.collections.list;
 
 import io.teknek.collections.MutableIterator;
 import io.teknek.collections.MutableSequence;
-import io.teknek.collections.RandomWriteAccess;
+import io.teknek.collections.ElementBasedWriteAccess;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 
-public class MutableArrayList<T> extends BaseArrayList<T> implements RandomWriteAccess<T>, MutableSequence<T> {
+public class MutableArrayList<T> extends BaseArrayList<T> implements ElementBasedWriteAccess<T>, MutableSequence<T> {
 
     @Override
     public MutableIterator<T> iterator() {

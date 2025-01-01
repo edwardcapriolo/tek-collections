@@ -1,6 +1,6 @@
 package io.teknek.collections;
 
-public interface RandomWriteAccess<T> extends Mutable<T> {
+public interface ElementBasedWriteAccess<T> extends Mutable<T> {
 
     /* return true if the list was altered: mimich java.util.List.add  */
     boolean add(T t);
