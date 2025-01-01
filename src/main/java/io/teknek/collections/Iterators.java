@@ -1,10 +1,4 @@
-package io.teknek.collections.evolving;
-
-import io.teknek.collections.ImmutableIterable;
-import io.teknek.collections.ImmutableIterator;
-import io.teknek.collections.MutableIterator;
-
-import java.util.Iterator;
+package io.teknek.collections;
 
 public class Iterators {
 

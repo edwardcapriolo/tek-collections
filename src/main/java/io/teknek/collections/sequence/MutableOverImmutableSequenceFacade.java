@@ -3,7 +3,7 @@ package io.teknek.collections.sequence;
 import io.teknek.collections.ImmutableSequence;
 import io.teknek.collections.MutableOverImmutableSequence;
 import io.teknek.collections.MutableSequence;
-import io.teknek.collections.evolving.Iterators;
+import io.teknek.collections.Iterators;
 import io.teknek.collections.list.MutableArrayList;
 
 import java.util.Iterator;
