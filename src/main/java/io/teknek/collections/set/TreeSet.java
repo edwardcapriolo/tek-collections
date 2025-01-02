@@ -1,11 +1,14 @@
 package io.teknek.collections.set;
 
+import io.teknek.collections.BaseBiDiirectionalIIterator;
 import io.teknek.collections.Set;
 
 import java.util.Comparator;
-import java.util.SortedSet;
+import java.util.Optional;
 
-public class TreeSet<T> implements Set<T> {
+import io.teknek.collections.SortedSet;
+
+public class TreeSet<T> implements Set<T>, SortedSet<T> {
 
     protected TreeNode<T> root;
     protected Comparator<T> comparator;
@@ -28,13 +31,13 @@ public class TreeSet<T> implements Set<T> {
         if (result == 0) {
             //consider if this method should return boolean
             return;
-        } else if (result < 0) {
+        } else if (result > 0) {
             if (root.left == null) {
                 root.left = new TreeNode<>(t, null, null);
             } else {
                 addElement(root.left, t);
             }
-        } else /*if (result > 0) */ {
+        } else /*if (result < 0) */ {
             if (root.right == null) {
                 root.right = new TreeNode<>(t, null, null);
             } else {
@@ -55,11 +58,58 @@ public class TreeSet<T> implements Set<T> {
         int result = comparator.compare(currentNode.datum, searchingFor);
         if (result == 0) {
             return true;
-        } else if (result < 0) {
+        } else if (result > 0) {
             return contains(currentNode.left, searchingFor);
         } else {
             return contains(currentNode.right, searchingFor);
         }
+    }
+
+    @Override
+    public T first() {
+        if (root == null){
+            return null;
+        }
+        return lowest(root);
+    }
+
+    private T lowest(TreeNode<T> node){
+        if (node.left == null){
+            return node.datum;
+        } else {
+            return lowest(node.left);
+        }
+    }
+
+    @Override
+    public T last() {
+        if (root == null){
+            return null;
+        }
+        return highest(root);
+    }
+
+    private T highest(TreeNode<T> node){
+        if (node.right == null){
+            return node.datum;
+        } else {
+            return lowest(node.right);
+        }
+    }
+
+    @Override
+    public Optional<BaseBiDiirectionalIIterator<T>> iteratorFrom(T from) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<T> after(T element) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<T> before(T element) {
+        return Optional.empty();
     }
 
     static class TreeNode<T> {
