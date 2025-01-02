@@ -1,3 +1,5 @@
+package io.teknek.collection.set;
+
 import io.teknek.collections.set.TreeSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

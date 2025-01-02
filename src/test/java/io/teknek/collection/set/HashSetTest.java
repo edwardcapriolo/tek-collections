@@ -1,3 +1,5 @@
+package io.teknek.collection.set;
+
 import io.teknek.collections.set.ImmutableHashSet;
 import org.junit.jupiter.api.Test;
 
