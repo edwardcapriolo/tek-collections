@@ -18,7 +18,7 @@ public class CompatabilityTest {
         Assertions.assertTrue(s.contains(null));
     }
     private static Stream<Set> nullSupportingSets(){
-        //TreeSet here would fail but not 
+        //TreeSet here would fail but not
         NullRetroFitSortedTest t = new NullRetroFitSortedTest();
         java.util.HashSet s = new HashSet();
        return Stream.of(t, s);
