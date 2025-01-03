@@ -13,6 +13,6 @@ public interface SortedSet<T> {
     T last();
     Maybe<T> lastOrNothing();
     Optional<BaseBiDiirectionalIIterator<T>> iteratorFrom(T from);
-    Optional<T> after(T element);
-    Optional<T> before(T element);
+    Maybe<T> after(T element);
+    Maybe<T> before(T element);
 }

@@ -119,26 +119,26 @@ public class TreeSet<T> implements Set<T>, SortedSet<T> {
     }
 
     @Override
-    public Optional<T> after(T element) {
-        return Optional.empty();
+    public Maybe<T> after(T element) {
+        return Maybe.nothing();
     }
 
     @Override
-    public Optional<T> before(T element) {
-        return Optional.empty();
+    public Maybe<T> before(T element) {
+        return Maybe.nothing();
     }
 
-    static class TreeNode<T> {
-        T datum;
-        TreeNode<T> left;
-        TreeNode<T> right;
-        public TreeNode(T datum, TreeNode<T> left, TreeNode<T> right){
-            this.datum = datum;
-            this.left = left;
-            this.right = right;
-        }
-    }
+}
 
+class TreeNode<T> {
+    T datum;
+    TreeNode<T> left;
+    TreeNode<T> right;
+    public TreeNode(T datum, TreeNode<T> left, TreeNode<T> right){
+        this.datum = datum;
+        this.left = left;
+        this.right = right;
+    }
 }
 
 
