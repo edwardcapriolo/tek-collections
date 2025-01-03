@@ -54,7 +54,13 @@ public class NullRetroFitSortedTest<T> implements SortedSet<T>{
 
     @Override
     public T first() {
-        return null;
+        Maybe<T> l = underlying.first();
+        if (Maybe.nullValue() == l){
+            return null;
+        } else {
+            Something<T> s = (Something<T>) l;
+            return s.get();
+        }
     }
 
     @Override
@@ -64,7 +70,7 @@ public class NullRetroFitSortedTest<T> implements SortedSet<T>{
 
     @Override
     public int size() {
-        return 0;
+        return underlying.size();
     }
 
     @Override

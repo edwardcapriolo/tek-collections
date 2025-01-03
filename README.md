@@ -19,7 +19,7 @@ good they surely could be better.
 
 1) Up the capatability between different datastructures out there
 2) Provide some missing datastructures with good implementations 
-3) Define APIs that things seemless
+3) Define APIs that things seamless
 4) Tackle the problems above, and others, and find new ones. 
 
 ## But what about...

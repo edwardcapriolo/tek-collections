@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import io.teknek.collections.SortedSet;
+import io.teknek.collections.evolving.Maybe;
 
 public class TreeSet<T> implements Set<T>, SortedSet<T> {
 
@@ -73,6 +74,12 @@ public class TreeSet<T> implements Set<T>, SortedSet<T> {
         return lowest(root);
     }
 
+    @Override
+    public Maybe<T> firstOrNothing() {
+        return null;
+    }
+
+
     private T lowest(TreeNode<T> node){
         if (node.left == null){
             return node.datum;
@@ -89,11 +96,20 @@ public class TreeSet<T> implements Set<T>, SortedSet<T> {
         return highest(root);
     }
 
+    @Override
+    public Maybe<T> lastOrNothing() {
+        if (root == null){
+            return Maybe.nothing();
+        } else {
+            return Maybe.possibly(highest(root));
+        }
+    }
+
     private T highest(TreeNode<T> node){
         if (node.right == null){
             return node.datum;
         } else {
-            return lowest(node.right);
+            return highest(node.right);
         }
     }
 

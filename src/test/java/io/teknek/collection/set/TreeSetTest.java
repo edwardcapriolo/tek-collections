@@ -1,5 +1,6 @@
 package io.teknek.collection.set;
 
+import io.teknek.collections.evolving.Maybe;
 import io.teknek.collections.set.TreeSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,4 +26,17 @@ public class TreeSetTest {
         TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5);
         Assertions.assertEquals(6, t.last());
     }
+
+    @Test
+    void testLastOrNone(){
+        TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5);
+        Assertions.assertEquals(Maybe.definately(6) , t.lastOrNothing());
+    }
+
+    @Test
+    void testLastOrNothing(){
+        TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, new Integer[0]);
+        Assertions.assertEquals(Maybe.nothing(), t.lastOrNothing());
+    }
+
 }

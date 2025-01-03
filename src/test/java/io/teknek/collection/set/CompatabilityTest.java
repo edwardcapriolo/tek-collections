@@ -13,14 +13,20 @@ public class CompatabilityTest {
 
     @ParameterizedTest
     @MethodSource("nullSupportingSets")
-    void test(java.util.Set s){
+    void test(java.util.Set s) {
         s.add(null);
         Assertions.assertTrue(s.contains(null));
+        if(s instanceof TreeSet){
+            TreeSet t = (TreeSet) s;
+            //somewhat dubious
+            Assertions.assertEquals(null, t.first());
+        }
     }
-    private static Stream<Set> nullSupportingSets(){
+
+    private static Stream<Set> nullSupportingSets() {
         //TreeSet here would fail but not
         NullRetroFitSortedTest t = new NullRetroFitSortedTest();
         java.util.HashSet s = new HashSet();
-       return Stream.of(t, s);
+        return Stream.of(t, s);
     }
 }
