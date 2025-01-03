@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 public abstract class Maybe<T> {
 
-    public static <T> Something<T> definately(T t){
+    public static <T> Something<T> definitely(T t){
         return new Something<>(Objects.requireNonNull(t, "this must be supplied"));
     }
     public static <T> Null<T> nullValue(){ return Null.INSTANCE; }

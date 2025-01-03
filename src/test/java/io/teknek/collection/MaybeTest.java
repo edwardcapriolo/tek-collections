@@ -8,12 +8,12 @@ public class MaybeTest {
 
     @Test
     public void nothingShouldNotEqualSomething(){
-        Assertions.assertNotEquals(Maybe.nothing(), Maybe.definately(5));
+        Assertions.assertNotEquals(Maybe.nothing(), Maybe.definitely(5));
     }
 
 
     @Test
     public void somethingShouldEqualItself(){
-        Assertions.assertEquals(Maybe.definately(5), Maybe.definately(5));
+        Assertions.assertEquals(Maybe.definitely(5), Maybe.definitely(5));
     }
 }

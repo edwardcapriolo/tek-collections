@@ -30,7 +30,7 @@ public class TreeSetTest {
     @Test
     void testLastOrNone(){
         TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5);
-        Assertions.assertEquals(Maybe.definately(6) , t.lastOrNothing());
+        Assertions.assertEquals(Maybe.definitely(6) , t.lastOrNothing());
     }
 
     @Test
