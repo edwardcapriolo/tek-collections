@@ -7,5 +7,5 @@ package io.teknek.collections;
  * @param <T> type of sequence
  */
 public interface MutableOverImmutableSequence<T> {
-    ImmutableSequence<T> copyAndInsert(T t);
+    MutableOverImmutableSequence<T> copyAndInsert(T t);
 }

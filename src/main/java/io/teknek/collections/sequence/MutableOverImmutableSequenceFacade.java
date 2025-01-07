@@ -1,9 +1,7 @@
 package io.teknek.collections.sequence;
 
-import io.teknek.collections.ImmutableSequence;
-import io.teknek.collections.MutableOverImmutableSequence;
-import io.teknek.collections.MutableSequence;
-import io.teknek.collections.Iterators;
+import io.teknek.collections.*;
+import io.teknek.collections.list.ImmutableArrayList;
 import io.teknek.collections.list.MutableArrayList;
 
 import java.util.Iterator;
@@ -18,19 +16,18 @@ public class MutableOverImmutableSequenceFacade<T> implements MutableOverImmutab
     }
 
     @Override
-    public ImmutableSequence<T> copyAndInsert(T t) {
+    public MutableOverImmutableSequence<T> copyAndInsert(T t) {
         MutableArrayList<T> stage = new MutableArrayList<>();
         for (Iterator<T> iter = Iterators.toJavaIterator(stage.iterator()); iter.hasNext(); ) {
             T it = iter.next();
             stage.add(it);
         }
         stage.add(t);
-        return of(stage);
+
+        return new MutableOverImmutableSequenceFacade<>( new ImmutableArrayList<T>(stage));
     }
 
-    private static <X> ImmutableSequence<X> of(MutableSequence<X> input){
-        return input::iterator;
-    }
+
 
     @Override
     public String toString() {

@@ -16,6 +16,13 @@ abstract class BaseArrayList<T> implements ElementBasedReadAccess<T>, Definitive
         data = new Object[t.length];
         System.arraycopy(t, 0, data, 0, t.length);
     }
+
+    public BaseArrayList(MutableArrayList copy){
+        data = new Object[copy.rawData().length];
+        for (int i=0;i< data.length;i++){
+            data[i] =copy.rawData()[i];
+        }
+    }
     @Override
     public T elementAt(int index) {
         return (T) data[index];
@@ -36,12 +43,20 @@ abstract class BaseArrayList<T> implements ElementBasedReadAccess<T>, Definitive
     public int size(){
         return data.length;
     }
+
+    public Object[] rawData(){
+        return data;
+    }
 }
 
 public class ImmutableArrayList<T> extends BaseArrayList<T> implements ImmutableSequence<T> {
 
     public ImmutableArrayList(T ... t){
         super(t);
+    }
+
+    public ImmutableArrayList(MutableArrayList copy){
+        super(copy);
     }
 
     @Override

@@ -1,14 +1,12 @@
 package io.teknek.collections.list;
 
-import io.teknek.collections.MutableIterator;
-import io.teknek.collections.MutableSequence;
-import io.teknek.collections.ElementBasedWriteAccess;
+import io.teknek.collections.*;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 
-public class MutableArrayList<T> extends BaseArrayList<T> implements ElementBasedWriteAccess<T>, MutableSequence<T> {
+public class MutableArrayList<T> extends BaseArrayList<T> implements ElementBasedWriteAccess<T>, MutableSequence<T>{
 
     @Override
     public MutableIterator<T> iterator() {
@@ -88,4 +86,5 @@ public class MutableArrayList<T> extends BaseArrayList<T> implements ElementBase
                 "data=" + Arrays.toString(data) +
                 '}';
     }
+
 }
