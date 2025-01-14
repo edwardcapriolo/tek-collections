@@ -22,7 +22,6 @@ public class TransactionTest {
             localReference.set(7L);
             txReference.localReference(all).set(Arrays.asList(3, 4));
         } );
-
         Assertions.assertEquals(7l, count.getUnsafe());
         Assertions.assertEquals(Arrays.asList(3, 4), all.getUnsafe());
 
@@ -34,9 +33,7 @@ public class TransactionTest {
             }
             txReference.localReference(all).set(Arrays.asList(9, 10));
         } );
-
         Assertions.assertEquals(7l, count.getUnsafe());
         Assertions.assertEquals(Arrays.asList(3, 4), all.getUnsafe());
-
     }
 }

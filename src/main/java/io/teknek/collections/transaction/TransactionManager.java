@@ -23,7 +23,7 @@ public class TransactionManager {
         return new GlobalReference<>(this, new AtomicReference<>(t));
     }
 
-    public void doSync(TransactionCallback callback) {
+    public boolean doSync(TransactionCallback callback) {
         final Long thisId = transactionId.getAndIncrement();
         Lock l = lock.writeLock();
         try {
@@ -35,11 +35,13 @@ public class TransactionManager {
                     localReference.refer.set(localReference.get());
                 }
             });
+            return true;
         } catch (Exception e) {
             // m.entrySet().forEach(x -> x.getValue().rollback());
         } finally {
             l.unlock();
         }
+        return false;
     }
 
     public static void main(String [] args){
@@ -49,7 +51,7 @@ public class TransactionManager {
         transactionManager.doSync((txReference)->{
             LocalReference<Long> localReference = txReference.localReference(count);
             localReference.set(7L);
-
         } );
+
     }
 }
