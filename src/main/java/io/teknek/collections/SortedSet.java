@@ -4,7 +4,7 @@ import io.teknek.collections.evolving.Maybe;
 
 import java.util.Optional;
 
-public interface SortedSet<T> {
+public interface SortedSet<T> extends Sorted<T> {
 
     T first();
     /* I have some misgivings around returning a maybe type. I see two separate uses a wrapper to store null and api
@@ -12,7 +12,7 @@ public interface SortedSet<T> {
     Maybe<T> firstOrNothing();
     T last();
     Maybe<T> lastOrNothing();
-    Optional<BaseBiDiirectionalIIterator<T>> iteratorFrom(T from);
+
     Maybe<T> after(T element);
     Maybe<T> before(T element);
 }

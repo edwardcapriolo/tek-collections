@@ -1,20 +1,17 @@
 package io.teknek.collections;
 
 
+import io.teknek.collections.evolving.firstorder.Pair;
+
 import java.util.Iterator;
+import java.util.List;
+import java.util.Spliterators;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class Iterators {
 
-    static class Pair<L,R> {
-        private L l;
-        private R r;
-        public Pair(L l , R r){
-            this.l = l;
-            this.r = r;
-        }
-    }
-
-     public static <T> java.util.Iterator<T> toJavaIterator(ImmutableIterator<T> immutableIterable){
+    public static <T> java.util.Iterator<T> toJavaIterator(ImmutableIterator<T> immutableIterable){
          return new java.util.Iterator<T>(){
 
              @Override
@@ -43,6 +40,14 @@ public class Iterators {
                  return new Pair<>(i, iterator.next());
              }
          };
+     }
+
+     public static <T> List<T> enumerate(Iterable<T> iterable){
+
+        Iterator<T> items = iterable.iterator();
+        Iterator<Pair<Integer, T>> x = iteratorWithIndex(items);
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(items,0), false)
+                .collect(Collectors.toList());
      }
 
     public static <T> java.util.Iterator<T> toJavaIterator(MutableIterator<T> mutableIterator){
