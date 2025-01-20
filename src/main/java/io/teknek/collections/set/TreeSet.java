@@ -10,11 +10,12 @@ import java.util.function.Consumer;
 
 
 import io.teknek.collections.evolving.Maybe;
+import io.teknek.collections.evolving.Something;
 
 interface TreeTraversable<T> {
     ImmutableIterator<T> inOrderIterator();
     void inOrderVisitor(Consumer<T> consumer);
-
+    void preOrderVisitor(Consumer<T> consumer);
 }
 
 public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTraversable<T> {
@@ -138,7 +139,20 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
 
     @Override
     public Maybe<T> after(T element) {
-        return Maybe.nothing();
+        return after(element, this.root);
+    }
+    private Maybe<T> after(T searchFor, TreeNode<T> node){
+        if(node == null){
+            return Maybe.nothing();
+        }
+        int split = comparator.compare(node.datum, searchFor);
+        if (split == 0 ){
+            return node.right== null ? Maybe.nothing() : Maybe.definitely(node.right.datum);
+        } else if(split > 0){
+            return after(searchFor, node.left);
+        } else {
+            return after(searchFor, node.right);
+        }
     }
 
     @Override
@@ -164,18 +178,42 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
 
     @Override
     public ImmutableIterator<T> inOrderIterator() {
-
+        //https://stackoverflow.com/questions/4581576/implementing-an-iterator-over-a-binary-search-tree
         final TreeNode<T> start = this.root;
+        if (start == null){
+            return (ImmutableIterator<T>) ImmutableIterator.<T>empty();
+        }
         ImmutableIterator<T> it = new ImmutableIterator<T>() {
-            TreeNode<T> current = start;
+            T current;
             @Override
             public boolean hasNext() {
-                return current == null;
+                if (current == null){
+                    return true;
+                }
+                Maybe<T> next = after(current);
+                return next != Maybe.nothing();
             }
 
             @Override
             public T next() {
-                return null;
+                if (current == null) {
+                    T toReturn = root.datum;
+                    current = root.datum;
+                    return toReturn;
+                } else {
+                    T toReturn = current;
+                    Maybe<T> next = after(current);
+                    if (next == Maybe.nothing()){
+                      //cant make current null need some other special value
+                    }
+                    if (next instanceof Something){
+                        Something<T> some = (Something<T>) next;
+                        current = some.get();
+                        return toReturn;
+                    }
+                }
+
+                throw new UnsupportedOperationException("logic error");
             }
         };
         return it;
@@ -184,6 +222,20 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
     @Override
     public void inOrderVisitor(Consumer<T> consumer) {
         inOrderConsumer(consumer, root);
+    }
+
+    @Override
+    public void preOrderVisitor(Consumer<T> consumer) {
+        preOrderConsumer(consumer, root);
+    }
+
+    private void preOrderConsumer(Consumer<T> consumer, TreeNode<T> node) {
+        if (node == null){
+            return;
+        }
+        consumer.accept(node.datum);
+        preOrderConsumer(consumer, node.left);
+        preOrderConsumer(consumer, node.right);
     }
 
     private void inOrderConsumer(Consumer<T> consumer, TreeNode<T> node){

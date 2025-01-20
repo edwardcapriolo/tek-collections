@@ -1,14 +1,13 @@
 package io.teknek.collection.set;
 
+import io.teknek.collections.ImmutableIterator;
 import io.teknek.collections.Sequence;
 import io.teknek.collections.evolving.Maybe;
 import io.teknek.collections.list.ImmutableArrayList;
 import io.teknek.collections.list.MutableArrayList;
-import io.teknek.collections.sequence.ObjectSequence;
 import io.teknek.collections.set.TreeSet;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,10 +33,27 @@ public class TreeSetTest {
     }
 
     @Test
+    void testAfter(){
+        TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5);
+        assertEquals(Maybe.definitely(4), t.after(2));
+        assertEquals(Maybe.nothing(), t.after(6));
+    }
+
+
+    @Test
     void testLastOrNone(){
         TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5);
         assertEquals(Maybe.definitely(6) , t.lastOrNothing());
         assertEquals(4, t.size());
+    }
+
+    @Test
+    void iterator(){
+        TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5);
+        ImmutableIterator<Integer> it = t.inOrderIterator();
+        Assertions.assertTrue(it.hasNext());
+        Assertions.assertEquals(2, it.next());
+        Sequence.equals(t.inOrderIterator(), new ImmutableArrayList<>(2, 4, 5, 6).iterator());
     }
 
     @Test
