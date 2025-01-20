@@ -12,12 +12,6 @@ import java.util.function.Consumer;
 import io.teknek.collections.evolving.Maybe;
 import io.teknek.collections.evolving.Something;
 
-interface TreeTraversable<T> {
-    ImmutableIterator<T> inOrderIterator();
-    void inOrderVisitor(Consumer<T> consumer);
-    void preOrderVisitor(Consumer<T> consumer);
-}
-
 public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTraversable<T> {
 
     protected TreeNode<T> root;
@@ -162,18 +156,9 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
 
     @Override
     public int size() {
-        AtomicLong l = new AtomicLong(0);
-        inOrder(l, this.root);
-        return (int) l.get();
-    }
-
-    private void inOrder(AtomicLong count, TreeNode<T> node){
-        if (node == null){
-            return;
-        }
-        inOrder(count, node.left);
-        count.getAndIncrement();
-        inOrder(count, node.right);
+        AtomicLong count = new AtomicLong();
+        inOrderConsumer( (x ) -> count.getAndIncrement(), this.root);
+        return (int) count.get();
     }
 
     @Override
@@ -222,11 +207,6 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
     @Override
     public void inOrderVisitor(Consumer<T> consumer) {
         inOrderConsumer(consumer, root);
-    }
-
-    @Override
-    public void preOrderVisitor(Consumer<T> consumer) {
-        preOrderConsumer(consumer, root);
     }
 
     private void preOrderConsumer(Consumer<T> consumer, TreeNode<T> node) {
