@@ -1,5 +1,8 @@
 package io.teknek.collections.transaction;
 
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
@@ -23,6 +26,11 @@ public class TransactionManager {
         return new GlobalReference<>(this, new AtomicReference<>(t));
     }
 
+    /**
+     * This is a very heavy lock affectively locking everything
+     * @param callback
+     * @return
+     */
     public boolean doSync(TransactionCallback callback) {
         final Long thisId = transactionId.getAndIncrement();
         Lock l = lock.writeLock();
@@ -47,10 +55,15 @@ public class TransactionManager {
     public static void main(String [] args){
         TransactionManager transactionManager = new TransactionManager();
         final GlobalReference<Long> count = transactionManager.register(0L);
+        TreeMap<String, Long> aMap = new TreeMap<>();
+        final GlobalReference<Map> mapReference = transactionManager.register(aMap);
 
         transactionManager.doSync((txReference)->{
             LocalReference<Long> localReference = txReference.localReference(count);
             localReference.set(7L);
+
+           // MapReference localMap = txReference.trackedMap(mapReference);
+           // mapReference.get().getKey(x) ;// locks a key for read  without locking entire map
         } );
 
     }

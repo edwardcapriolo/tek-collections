@@ -27,13 +27,13 @@ public abstract class Maybe<T> {
         if (t == null){
             return Null.INSTANCE;
         }
-        else throw new RuntimeException("This must be null");
+        else throw new IllegalArgumentException("This must be null " );
     }
 
 }
 
 /**
- * The equivilent of None, a databstructure could never hold nothing, but a method could return it to signify the result was
+ * The equivalent of None, a databstructure could never hold nothing, but a method could return it to signify the result was
  * not found
  * @param <T>
  */
@@ -65,5 +65,11 @@ class Null<T> extends Maybe<T> {
     @Override
     public String toString() {
         return "Null{}";
+    }
+
+    public static void main(String [] args){
+        System.out.println(10*11);
+
+
     }
 }

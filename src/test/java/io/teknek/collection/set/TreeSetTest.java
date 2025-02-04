@@ -70,4 +70,35 @@ public class TreeSetTest {
         Sequence.equals(assertList.iterator(), new ImmutableArrayList<>(2, 4, 5, 6).iterator());
     }
 
+    @Test
+    void inOrderTraversalWithNull(){
+        TreeSet<Integer> t = new TreeSet<>(Integer::compareTo, 2, 4, 5, 6, 5, null);
+        MutableArrayList<Integer> assertList = new MutableArrayList<>();
+        t.inOrderVisitor(assertList::add);
+        Sequence.equals(assertList.iterator(), new ImmutableArrayList<>(2, 4, 5, 6).iterator());
+    }
+
+    public static void main(String [] args) throws InterruptedException {
+        /*
+        for (int i=0; i<= 10; i++){
+            for (int j=0;j<=10;j++) {
+                System.out.println( i + " *  "+j + " =" +(i*j));
+            }
+        }*/
+        /*
+        int k = 6;
+        int j = 7;
+        int result = 0;
+        for (int count=0; count < j; count++){
+            result += k;
+            System.out.println( result);
+            Thread.sleep(1000);
+        }
+        System.out.println("the final result is " + result);
+        */
+
+        for (int i=0; i<= 10; i++) {
+            System.out.println( i + " *  "+i + " =" +(i*i));
+        }
+    }
 }

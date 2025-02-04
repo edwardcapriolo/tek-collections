@@ -8,23 +8,21 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Consumer;
 
-
 import io.teknek.collections.evolving.Maybe;
-import io.teknek.collections.evolving.Something;
 
 public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTraversable<T> {
 
-    protected TreeNode<T> root;
-    protected Comparator<T> comparator;
+    protected TreeNode root;
+    protected Comparator comparator;
 
-    public TreeSet(Comparator<T> comparator, T... elements) {
-        this.comparator = comparator;
+    public TreeSet(Comparator<T> comparator, T ... elements) {
+        this.comparator = MaybeComparator.of(comparator);
         for (T t : elements) {
             if (root == null) {
-                root = new TreeNode<>(t, null, null);
+                root = new TreeNode<>(nullToNothing(t), null, null);
                 continue;
             }
-            addElement(root, t);
+            addElement(root, (T) nullToNothing(t));
         }
     }
 
@@ -32,16 +30,17 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         this.comparator = comparator;
         for (T t : input) {
             if (root == null) {
-                root = new TreeNode<>(t, null, null);
+                root = new TreeNode<>(nullToNothing(t), null, null);
                 continue;
             }
-            addElement(root, t);
+            addElement(root, (T) nullToNothing(t));
         }
     }
 
 
     private void addElement(TreeNode<T> root, T t) {
         int result = comparator.compare(root.datum, t);
+
         if (result == 0) {
             //consider if this method should return boolean
             return;
@@ -84,7 +83,8 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         if (root == null){
             return null;
         }
-        return lowest(root);
+        Object nothingOrResult = lowest(root);
+        return Maybe.nothing() == nothingOrResult ? null : (T) nothingOrResult;
     }
 
     @Override
@@ -106,7 +106,8 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         if (root == null){
             return null;
         }
-        return highest(root);
+        Object nothingOrResult = highest(root);
+        return Maybe.nothing() == nothingOrResult ? null : (T) nothingOrResult;
     }
 
     @Override
@@ -114,7 +115,8 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
         if (root == null){
             return Maybe.nothing();
         } else {
-            return Maybe.possibly(highest(root));
+            Object nothingORResult =  highest(root);
+            return Maybe.nothing() == nothingORResult ? Maybe.nullValue() : Maybe.definitely( (T) nothingORResult);
         }
     }
 
@@ -140,8 +142,8 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
             return Maybe.nothing();
         }
         int split = comparator.compare(node.datum, searchFor);
-        if (split == 0 ){
-            return node.right== null ? Maybe.nothing() : Maybe.definitely(node.right.datum);
+        if (split == 0){
+            return node.right == null ? Maybe.nothing() : Maybe.definitely(node.right.datum);
         } else if(split > 0){
             return after(searchFor, node.left);
         } else {
@@ -164,41 +166,40 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
     @Override
     public ImmutableIterator<T> inOrderIterator() {
         //https://stackoverflow.com/questions/4581576/implementing-an-iterator-over-a-binary-search-tree
-        final TreeNode<T> start = this.root;
+        final TreeNode start = this.root;
         if (start == null){
             return (ImmutableIterator<T>) ImmutableIterator.<T>empty();
         }
         ImmutableIterator<T> it = new ImmutableIterator<T>() {
-            T current;
+            Object current;
+            boolean first = true;
             @Override
             public boolean hasNext() {
-                if (current == null){
+                if (first){
                     return true;
                 }
-                Maybe<T> next = after(current);
+                T seak = current == Maybe.nothing() ? null : (T) current;
+                Maybe<T> next = after(seak);
                 return next != Maybe.nothing();
             }
 
             @Override
             public T next() {
-                if (current == null) {
-                    T toReturn = root.datum;
+                if (first) {
+                    Object toReturn = root.datum;
                     current = root.datum;
-                    return toReturn;
+                    first = false;
+                    return toReturn == Maybe.nothing() ? null : (T) current;
                 } else {
-                    T toReturn = current;
-                    Maybe<T> next = after(current);
+                    Object toReturn = current;
+                    T converted = objectToCouldBeT(toReturn);
+                    Maybe<T> next = after(converted);
                     if (next == Maybe.nothing()){
-                      //cant make current null need some other special value
+                        throw new IllegalArgumentException("Next passed end");
                     }
-                    if (next instanceof Something){
-                        Something<T> some = (Something<T>) next;
-                        current = some.get();
-                        return toReturn;
-                    }
+                    current = converted;
+                    return converted;
                 }
-
-                throw new UnsupportedOperationException("logic error");
             }
         };
         return it;
@@ -223,8 +224,15 @@ public class TreeSet<T> implements Set<T>, SortedSet<T>, DefinitiveSize, TreeTra
             return;
         }
         inOrderConsumer(consumer, node.left);
-        consumer.accept(node.datum);
+        consumer.accept( node.datum == Maybe.nothing() ? null: node.datum);
         inOrderConsumer(consumer, node.right);
+    }
+
+    private static <X> Object nullToNothing(X t){
+        return t == null? Maybe.nothing() : t;
+    }
+    private static <X> X objectToCouldBeT(Object o){
+        return o == Maybe.nothing() ? null : (X) o;
     }
 }
 
