@@ -1,6 +1,7 @@
 package io.teknek.collection.bounds;
 
 import io.teknek.collections.bounds.ClosedInterval;
+import io.teknek.collections.bounds.Exclusive;
 import io.teknek.collections.bounds.Inclusive;
 import io.teknek.collections.bounds.PositiveIntOrZero;
 import org.junit.jupiter.api.Test;
@@ -23,6 +24,24 @@ public class ClosedIntervalTest {
     void inclusiveTests(){
         ClosedInterval larger = new ClosedInterval(Inclusive.of(0), Inclusive(10));
         ClosedInterval smaller = new ClosedInterval( new Inclusive(5), new Inclusive(7));
+        assertTrue(larger.contains(smaller));
+        assertFalse(smaller.contains(larger));
+        assertTrue(larger.contains(larger));
+    }
+
+    @Test
+    void exclusiveTests(){
+        ClosedInterval larger = new ClosedInterval(Exclusive.of(0), Exclusive.of(10));
+        ClosedInterval smaller = new ClosedInterval(Exclusive.of(5), Exclusive.of(7));
+        assertTrue(larger.contains(smaller));
+        assertFalse(smaller.contains(larger));
+        assertTrue(larger.contains(larger));
+    }
+
+    @Test
+    void inclusiveExclusiveTests(){
+        ClosedInterval larger = new ClosedInterval(Inclusive.of(0), Inclusive.of(1));
+        ClosedInterval smaller = new ClosedInterval(Exclusive.of(0), Inclusive.of(1));
         assertTrue(larger.contains(smaller));
         assertFalse(smaller.contains(larger));
         assertTrue(larger.contains(larger));
